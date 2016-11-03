@@ -6,6 +6,7 @@ import ReactDom from 'react-dom';
 import MessageBox from './messageBox.js';
 import ListStore from '../store/ListStore.js';
 import Actions from '../action/action.js';
+import LeftPage from './leftPage.js';
 //var messageList=[];
 class Main extends React.Component{
     constructor(){
@@ -21,7 +22,6 @@ class Main extends React.Component{
     componentDidMount() {
         var that=this;
         ListStore.addChangeListener(that._onChange.bind(that));
-        this.setState({value:""});
     }
     componentWillUnmount() {
         ListStore.removeChangeListener(this._onChange);
@@ -39,13 +39,17 @@ class Main extends React.Component{
         var that=this;
         console.log(that.state.value);
         Actions.addMessage(that.state.value);
+        //<MessageBox messageList={this.state.items}/>
+
+//    <input type="text" onChange={(e)=>{this.handleChange(e)}} value={this.state.value}/>
+//<input type="button" value="add" onClick={()=>{this.handleClick()}}/>
     }
     render(){
            return <div className="root">
-                        <MessageBox messageList={this.state.items}/>
-                        <div className="inputs">
-                            <input type="text" onChange={(e)=>{this.handleChange(e)}} value={this.state.value}/>
-                            <input type="button" value="add" onClick={()=>{this.handleClick()}}/>
+                        <div className="head"></div>
+                        <div style={{float:'left'}}><LeftPage/></div>
+                        <div className="inputs" style={{float:'left'}}>
+
                         </div>
                     </div>
     }

@@ -13,7 +13,7 @@ var ListStore = assign({}, EventEmitter.prototype, {
     },
 
     addMessage: function (text) {
-        this.items.push(<li key={text}>{text}</li>);
+        this.items.push(<li>{text}</li>);
     },
 
     emitChange: function () {

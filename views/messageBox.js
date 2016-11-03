@@ -3,6 +3,7 @@
  */
 import React from 'react';
 import ReactDom from 'react-dom';
+require('../css/default.css');
 class MessageBox extends React.Component{
     constructor(){
         super();
