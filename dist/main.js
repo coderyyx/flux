@@ -21463,9 +21463,13 @@
 
 	var _action2 = _interopRequireDefault(_action);
 
-	var _leftPage = __webpack_require__(185);
+	var _leftPage = __webpack_require__(186);
 
 	var _leftPage2 = _interopRequireDefault(_leftPage);
+
+	var _TopNav = __webpack_require__(191);
+
+	var _TopNav2 = _interopRequireDefault(_TopNav);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -21501,6 +21505,7 @@
 	        key: 'componentDidMount',
 	        value: function componentDidMount() {
 	            var that = this;
+	            //store里面emit了change，调用回调函数onChange
 	            _ListStore2.default.addChangeListener(that._onChange.bind(that));
 	        }
 	    }, {
@@ -21538,13 +21543,16 @@
 	            return _react2.default.createElement(
 	                'div',
 	                { className: 'root' },
-	                _react2.default.createElement('div', { className: 'head' }),
 	                _react2.default.createElement(
 	                    'div',
-	                    { style: { float: 'left' } },
-	                    _react2.default.createElement(_leftPage2.default, null)
+	                    { className: 'head' },
+	                    _react2.default.createElement(_TopNav2.default, null)
 	                ),
-	                _react2.default.createElement('div', { className: 'inputs', style: { float: 'left' } })
+	                _react2.default.createElement(
+	                    'div',
+	                    null,
+	                    _react2.default.createElement(_leftPage2.default, null)
+	                )
 	            );
 	        }
 	    }]);
@@ -21672,7 +21680,7 @@
 
 
 	// module
-	exports.push([module.id, "/*.box{*/\r\n    /*width: 200px;*/\r\n    /*height: 300px;*/\r\n    /*overflow-y: auto;*/\r\n    /*background-color: gray;*/\r\n/*}*/\r\n.menuList{\r\n    border: 1px solid black;\r\n}\r\n.menuList a{\r\n    display: block;\r\n    border-bottom: 1px solid black;\r\n    text-decoration: none;\r\n    height: 160px;\r\n    width: 100px;\r\n    color: #000000;\r\n    line-height: 160px;\r\n    text-align: center;\r\n}\r\n.head{\r\n    height:40px;\r\n    border:1px solid #000000;\r\n}", ""]);
+	exports.push([module.id, "/*.box{*/\r\n    /*width: 200px;*/\r\n    /*height: 300px;*/\r\n    /*overflow-y: auto;*/\r\n    /*background-color: gray;*/\r\n/*}*/\r\n.menuList{\r\n    border: 1px solid black;\r\n    float: left;\r\n    width: 13%;\r\n}\r\n.menuList a{\r\n    display: block;\r\n    border-bottom: 1px solid black;\r\n    border-right: 1px solid black;\r\n    text-decoration: none;\r\n    height: 160px;\r\n    width: 100%;\r\n    color: #000000;\r\n    line-height: 160px;\r\n    text-align: center;\r\n}\r\n.head{\r\n    height:40px;\r\n    border:1px solid #000000;\r\n}\r\n\r\n.menuList a:hover{\r\n        background-color: green;\r\n        color: white;\r\n}\r\n", ""]);
 
 	// exports
 
@@ -22367,6 +22375,12 @@
 	            actionType: 'ADD_MESSAGE',
 	            text: text
 	        });
+	    },
+	    transClick: function transClick(text) {
+	        _dispatcher2.default.dispatch({
+	            actionType: 'handle_Click',
+	            text: text
+	        });
 	    }
 	}; /**
 	    * Created by yyx on 2016/11/3.
@@ -22391,12 +22405,16 @@
 
 	var _ListStore2 = _interopRequireDefault(_ListStore);
 
+	var _pageStore = __webpack_require__(185);
+
+	var _pageStore2 = _interopRequireDefault(_pageStore);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	/**
-	 * Created by yyx on 2016/11/3.
-	 */
-	var Dispatcher = _flux2.default.Dispatcher;
+	var Dispatcher = _flux2.default.Dispatcher; /**
+	                                             * Created by yyx on 2016/11/3.
+	                                             */
+
 	Dispatcher = new Dispatcher();
 
 	Dispatcher.register(function (action) {
@@ -22404,6 +22422,10 @@
 	        case 'ADD_MESSAGE':
 	            _ListStore2.default.addMessage(action.text);
 	            _ListStore2.default.emitChange();
+	            break;
+	        case 'handle_Click':
+	            _pageStore2.default.transClick(action.text);
+	            _pageStore2.default.emitChange();
 	            break;
 	        default:
 	    }
@@ -22729,6 +22751,217 @@
 	    value: true
 	});
 
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var EventEmitter = __webpack_require__(179).EventEmitter; /**
+	                                                    * Created by yyx on 2016/11/3.
+	                                                    */
+
+	var assign = __webpack_require__(4);
+
+	var pageStore = assign({}, EventEmitter.prototype, {
+	    index: "",
+
+	    getIndex: function getIndex() {
+	        return this.index;
+	    },
+
+	    transClick: function transClick(text) {
+	        this.index = text;
+	    },
+
+	    emitChange: function emitChange() {
+	        this.emit('change');
+	    },
+
+	    addChangeListener: function addChangeListener(callback) {
+	        this.on('change', callback);
+	    },
+
+	    removeChangeListener: function removeChangeListener(callback) {
+	        this.removeListener('change', callback);
+	    }
+	});
+
+	exports.default = pageStore;
+
+/***/ },
+/* 186 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _reactDom = __webpack_require__(34);
+
+	var _reactDom2 = _interopRequireDefault(_reactDom);
+
+	var _action = __webpack_require__(180);
+
+	var _action2 = _interopRequireDefault(_action);
+
+	var _pageStore = __webpack_require__(185);
+
+	var _pageStore2 = _interopRequireDefault(_pageStore);
+
+	var _LeftPage = __webpack_require__(187);
+
+	var _LeftPage2 = _interopRequireDefault(_LeftPage);
+
+	var _LeftPage3 = __webpack_require__(188);
+
+	var _LeftPage4 = _interopRequireDefault(_LeftPage3);
+
+	var _LeftPage5 = __webpack_require__(189);
+
+	var _LeftPage6 = _interopRequireDefault(_LeftPage5);
+
+	var _LeftPage7 = __webpack_require__(190);
+
+	var _LeftPage8 = _interopRequireDefault(_LeftPage7);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } /**
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * Created by yyx on 2016/11/3.
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                */
+
+
+	var pagesArr = [_LeftPage2.default, _LeftPage2.default, _LeftPage4.default, _LeftPage6.default, _LeftPage8.default];
+
+	var LeftPage = function (_React$Component) {
+	    _inherits(LeftPage, _React$Component);
+
+	    function LeftPage() {
+	        _classCallCheck(this, LeftPage);
+
+	        var _this = _possibleConstructorReturn(this, (LeftPage.__proto__ || Object.getPrototypeOf(LeftPage)).call(this));
+
+	        _this.state = {
+	            value: "",
+	            index: ""
+	        };
+	        return _this;
+	    }
+
+	    _createClass(LeftPage, [{
+	        key: 'componentWillMount',
+	        value: function componentWillMount() {
+	            var _this2 = this;
+
+	            _pageStore2.default.addChangeListener(function () {
+	                return _this2._onChange();
+	            });
+	        }
+	    }, {
+	        key: 'componentWillUnmount',
+	        value: function componentWillUnmount() {
+	            _pageStore2.default.removeChangeListener(this._onChange);
+	        }
+	    }, {
+	        key: 'handleChange',
+	        value: function handleChange(e) {}
+	    }, {
+	        key: '_onChange',
+	        value: function _onChange() {
+	            console.log(this);
+	            this.setState({ index: _pageStore2.default.getIndex() });
+	        }
+	    }, {
+	        key: 'handleClick',
+	        value: function handleClick() {}
+	    }, {
+	        key: 'click1',
+	        value: function click1() {
+	            _action2.default.transClick(1);
+	        }
+	    }, {
+	        key: 'click2',
+	        value: function click2() {
+	            _action2.default.transClick(2);
+	        }
+	    }, {
+	        key: 'click3',
+	        value: function click3() {
+	            _action2.default.transClick(3);
+	        }
+	    }, {
+	        key: 'click4',
+	        value: function click4() {
+	            _action2.default.transClick(4);
+	        }
+	    }, {
+	        key: 'render',
+	        value: function render() {
+	            var MainPage = this.state.index == "" ? _LeftPage2.default : pagesArr[this.state.index];
+	            return _react2.default.createElement(
+	                'div',
+	                { style: { width: '100%', height: '100%', overflow: 'hidden', zoom: 1, clear: 'both' } },
+	                _react2.default.createElement(
+	                    'div',
+	                    { className: 'menuList' },
+	                    _react2.default.createElement(
+	                        'a',
+	                        { href: '#', onClick: this.click1 },
+	                        '\u7B2C\u4E00\u90E8\u5206'
+	                    ),
+	                    _react2.default.createElement(
+	                        'a',
+	                        { href: '#', onClick: this.click2 },
+	                        '\u7B2C\u4E8C\u90E8\u5206'
+	                    ),
+	                    _react2.default.createElement(
+	                        'a',
+	                        { href: '#', onClick: this.click3 },
+	                        '\u7B2C\u4E09\u90E8\u5206'
+	                    ),
+	                    _react2.default.createElement(
+	                        'a',
+	                        { href: '#', onClick: this.click4 },
+	                        '\u7B2C\u56DB\u90E8\u5206'
+	                    )
+	                ),
+	                _react2.default.createElement(
+	                    'div',
+	                    { className: 'inputs', style: { float: 'right', width: '86%', height: '100%' } },
+	                    _react2.default.createElement(MainPage, null)
+	                )
+	            );
+	        }
+	    }]);
+
+	    return LeftPage;
+	}(_react2.default.Component);
+
+	exports.default = LeftPage;
+
+/***/ },
+/* 187 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 	var _react = __webpack_require__(1);
@@ -22750,13 +22983,13 @@
 	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                */
 
 
-	var LeftPage = function (_React$Component) {
-	    _inherits(LeftPage, _React$Component);
+	var LeftPage1 = function (_React$Component) {
+	    _inherits(LeftPage1, _React$Component);
 
-	    function LeftPage() {
-	        _classCallCheck(this, LeftPage);
+	    function LeftPage1() {
+	        _classCallCheck(this, LeftPage1);
 
-	        var _this = _possibleConstructorReturn(this, (LeftPage.__proto__ || Object.getPrototypeOf(LeftPage)).call(this));
+	        var _this = _possibleConstructorReturn(this, (LeftPage1.__proto__ || Object.getPrototypeOf(LeftPage1)).call(this));
 
 	        _this.state = {
 	            value: ""
@@ -22764,7 +22997,77 @@
 	        return _this;
 	    }
 
-	    _createClass(LeftPage, [{
+	    _createClass(LeftPage1, [{
+	        key: 'componentWillMount',
+	        value: function componentWillMount() {}
+	    }, {
+	        key: 'handleChange',
+	        value: function handleChange(e) {}
+	    }, {
+	        key: 'handleClick',
+	        value: function handleClick() {}
+	    }, {
+	        key: 'render',
+	        value: function render() {
+	            return _react2.default.createElement(
+	                'div',
+	                { className: '' },
+	                '11111'
+	            );
+	        }
+	    }]);
+
+	    return LeftPage1;
+	}(_react2.default.Component);
+
+	exports.default = LeftPage1;
+
+/***/ },
+/* 188 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _reactDom = __webpack_require__(34);
+
+	var _reactDom2 = _interopRequireDefault(_reactDom);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } /**
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * Created by yyx on 2016/11/3.
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                */
+
+
+	var LeftPage1 = function (_React$Component) {
+	    _inherits(LeftPage1, _React$Component);
+
+	    function LeftPage1() {
+	        _classCallCheck(this, LeftPage1);
+
+	        var _this = _possibleConstructorReturn(this, (LeftPage1.__proto__ || Object.getPrototypeOf(LeftPage1)).call(this));
+
+	        _this.state = {
+	            value: ""
+	        };
+	        return _this;
+	    }
+
+	    _createClass(LeftPage1, [{
 	        key: 'componentWillMount',
 	        value: function componentWillMount() {}
 	    }, {
@@ -22779,34 +23082,230 @@
 	            return _react2.default.createElement(
 	                'div',
 	                { className: 'menuList' },
-	                _react2.default.createElement(
-	                    'a',
-	                    { href: '#' },
-	                    '\u7B2C\u4E00\u90E8\u5206'
-	                ),
-	                _react2.default.createElement(
-	                    'a',
-	                    { href: '#' },
-	                    '\u7B2C\u4E8C\u90E8\u5206'
-	                ),
-	                _react2.default.createElement(
-	                    'a',
-	                    { href: '#' },
-	                    '\u7B2C\u4E09\u90E8\u5206'
-	                ),
-	                _react2.default.createElement(
-	                    'a',
-	                    { href: '#' },
-	                    '\u7B2C\u56DB\u90E8\u5206'
-	                )
+	                '2222'
 	            );
 	        }
 	    }]);
 
-	    return LeftPage;
+	    return LeftPage1;
 	}(_react2.default.Component);
 
-	exports.default = LeftPage;
+	exports.default = LeftPage1;
+
+/***/ },
+/* 189 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _reactDom = __webpack_require__(34);
+
+	var _reactDom2 = _interopRequireDefault(_reactDom);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } /**
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * Created by yyx on 2016/11/3.
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                */
+
+
+	var LeftPage1 = function (_React$Component) {
+	    _inherits(LeftPage1, _React$Component);
+
+	    function LeftPage1() {
+	        _classCallCheck(this, LeftPage1);
+
+	        var _this = _possibleConstructorReturn(this, (LeftPage1.__proto__ || Object.getPrototypeOf(LeftPage1)).call(this));
+
+	        _this.state = {
+	            value: ""
+	        };
+	        return _this;
+	    }
+
+	    _createClass(LeftPage1, [{
+	        key: 'componentWillMount',
+	        value: function componentWillMount() {}
+	    }, {
+	        key: 'handleChange',
+	        value: function handleChange(e) {}
+	    }, {
+	        key: 'handleClick',
+	        value: function handleClick() {}
+	    }, {
+	        key: 'render',
+	        value: function render() {
+	            return _react2.default.createElement(
+	                'div',
+	                { className: 'menuList' },
+	                '3333'
+	            );
+	        }
+	    }]);
+
+	    return LeftPage1;
+	}(_react2.default.Component);
+
+	exports.default = LeftPage1;
+
+/***/ },
+/* 190 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _reactDom = __webpack_require__(34);
+
+	var _reactDom2 = _interopRequireDefault(_reactDom);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } /**
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * Created by yyx on 2016/11/3.
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                */
+
+
+	var LeftPage1 = function (_React$Component) {
+	    _inherits(LeftPage1, _React$Component);
+
+	    function LeftPage1() {
+	        _classCallCheck(this, LeftPage1);
+
+	        var _this = _possibleConstructorReturn(this, (LeftPage1.__proto__ || Object.getPrototypeOf(LeftPage1)).call(this));
+
+	        _this.state = {
+	            value: ""
+	        };
+	        return _this;
+	    }
+
+	    _createClass(LeftPage1, [{
+	        key: 'componentWillMount',
+	        value: function componentWillMount() {}
+	    }, {
+	        key: 'handleChange',
+	        value: function handleChange(e) {}
+	    }, {
+	        key: 'handleClick',
+	        value: function handleClick() {}
+	    }, {
+	        key: 'render',
+	        value: function render() {
+	            return _react2.default.createElement(
+	                'div',
+	                { className: 'menuList' },
+	                '4444'
+	            );
+	        }
+	    }]);
+
+	    return LeftPage1;
+	}(_react2.default.Component);
+
+	exports.default = LeftPage1;
+
+/***/ },
+/* 191 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _reactDom = __webpack_require__(34);
+
+	var _reactDom2 = _interopRequireDefault(_reactDom);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } /**
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * Created by yyx on 2016/11/3.
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                */
+
+
+	var TopNav = function (_React$Component) {
+	    _inherits(TopNav, _React$Component);
+
+	    function TopNav() {
+	        _classCallCheck(this, TopNav);
+
+	        var _this = _possibleConstructorReturn(this, (TopNav.__proto__ || Object.getPrototypeOf(TopNav)).call(this));
+
+	        _this.state = {
+	            value: ""
+	        };
+	        return _this;
+	    }
+
+	    _createClass(TopNav, [{
+	        key: 'componentWillMount',
+	        value: function componentWillMount() {}
+	    }, {
+	        key: 'handleChange',
+	        value: function handleChange(e) {}
+	    }, {
+	        key: 'handleClick',
+	        value: function handleClick() {}
+	    }, {
+	        key: 'render',
+	        value: function render() {
+	            return _react2.default.createElement(
+	                'div',
+	                { className: '' },
+	                _react2.default.createElement(
+	                    'span',
+	                    { style: { color: 'red', fontSize: '25px', fontWeight: '900' } },
+	                    'Flux Demo'
+	                ),
+	                _react2.default.createElement('input', { type: 'text' })
+	            );
+	        }
+	    }]);
+
+	    return TopNav;
+	}(_react2.default.Component);
+
+	exports.default = TopNav;
 
 /***/ }
 /******/ ]);

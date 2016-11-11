@@ -3,6 +3,7 @@
  */
 import Flux from 'flux';
 import ListStore from '../store/ListStore.js';
+import PageStore from '../store/pageStore.js';
 var Dispatcher=Flux.Dispatcher;
 Dispatcher=new Dispatcher();
 
@@ -11,6 +12,10 @@ Dispatcher.register(function(action){
         case 'ADD_MESSAGE':
             ListStore.addMessage(action.text);
             ListStore.emitChange();
+            break;
+        case 'handle_Click':
+            PageStore.transClick(action.text);
+            PageStore.emitChange();
             break;
         default :
     }

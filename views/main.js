@@ -7,6 +7,7 @@ import MessageBox from './messageBox.js';
 import ListStore from '../store/ListStore.js';
 import Actions from '../action/action.js';
 import LeftPage from './leftPage.js';
+import TopNav from './TopNav.js';
 //var messageList=[];
 class Main extends React.Component{
     constructor(){
@@ -21,6 +22,7 @@ class Main extends React.Component{
     }
     componentDidMount() {
         var that=this;
+        //store里面emit了change，调用回调函数onChange
         ListStore.addChangeListener(that._onChange.bind(that));
     }
     componentWillUnmount() {
@@ -46,10 +48,12 @@ class Main extends React.Component{
     }
     render(){
            return <div className="root">
-                        <div className="head"></div>
-                        <div style={{float:'left'}}><LeftPage/></div>
-                        <div className="inputs" style={{float:'left'}}>
-
+                        <div className="head">
+                            <TopNav/>
+                        </div>
+                        <div>
+                            <LeftPage/>
+                            
                         </div>
                     </div>
     }

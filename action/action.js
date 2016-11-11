@@ -8,6 +8,12 @@ var Actions = {
             actionType:'ADD_MESSAGE',
             text:text
         })
+    },
+    transClick:function(text){
+    	Dispatcher.dispatch({
+    		actionType:'handle_Click',
+    		text:text
+    	})
     }
 }
 

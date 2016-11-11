@@ -6,13 +6,16 @@
 /*}*/
 .menuList{
     border: 1px solid black;
+    float: left;
+    width: 13%;
 }
 .menuList a{
     display: block;
     border-bottom: 1px solid black;
+    border-right: 1px solid black;
     text-decoration: none;
     height: 160px;
-    width: 100px;
+    width: 100%;
     color: #000000;
     line-height: 160px;
     text-align: center;
@@ -20,4 +23,9 @@
 .head{
     height:40px;
     border:1px solid #000000;
+}
+
+.menuList a:hover{
+        background-color: green;
+        color: white;
 }
